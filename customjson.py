@@ -23,35 +23,33 @@ class CustomJSON(Task):
         if not os.path.exists(filepath):
             # Helpful error message due to recent change. Will be removed in the future.
             print("-" * 80)
-            print(f"Error: File {filepath} does not exist")
+            print(f"Warning: File {filepath} does not exist")
             print("HINT (Oct 21 2025)")
             print("If you recently did a git pull and suddely see this, it might be due to the new addition of identity conversations")
             print("See this discussion for more details: https://github.com/karpathy/nanochat/discussions/139")
-            print("Quick fix: run the following command to download the file:")
+            print("Quick fix: simply run the following command to download the file and you're done:")
             print(f"curl -L -o {filepath} https://karpathy-public.s3.us-west-2.amazonaws.com/identity_conversations.jsonl")
             print("-" * 80)
-            raise FileNotFoundError(f"File {filepath} does not exist")
 
-        with open(filepath, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if not line:  # skip empty lines
-                    continue
-                messages = json.loads(line)
+        else:
+            with open(filepath, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:  # skip empty lines
+                        continue
+                    messages = json.loads(line)
+                    # Validate the conversation structure
+                    assert isinstance(messages, list), f"Expected list of messages, got {type(messages)}"
+                    assert len(messages) >= 2, f"Conversation must have at least 2 messages, got {len(messages)}"
+                    # Validate message structure and alternating roles
+                    for i, message in enumerate(messages):
+                        assert "role" in message, f"Message {i} missing 'role' field"
+                        assert "content" in message, f"Message {i} missing 'content' field"
+                        expected_role = "user" if i % 2 == 0 else "assistant"
+                        assert message["role"] == expected_role, f"Message {i} has role {message['role']} but should be {expected_role}"
+                        assert isinstance(message["content"], str), f"Message {i} content must be a string"
 
-                # Validate the conversation structure
-                assert isinstance(messages, list), f"Expected list of messages, got {type(messages)}"
-                assert len(messages) >= 2, f"Conversation must have at least 2 messages, got {len(messages)}"
-
-                # Validate message structure and alternating roles
-                for i, message in enumerate(messages):
-                    assert "role" in message, f"Message {i} missing 'role' field"
-                    assert "content" in message, f"Message {i} missing 'content' field"
-                    expected_role = "user" if i % 2 == 0 else "assistant"
-                    assert message["role"] == expected_role, f"Message {i} has role {message['role']} but should be {expected_role}"
-                    assert isinstance(message["content"], str), f"Message {i} content must be a string"
-
-                self.conversations.append(messages)
+                    self.conversations.append(messages)
 
         self.length = len(self.conversations)
 
