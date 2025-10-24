@@ -260,7 +260,7 @@ class SimpleSpelling(Task):
         # return the full conversation
         messages = [
             {"role": "user", "content": f"Spell the word: {word}"},
-            {"role": "assistant", "content": f"{word}: {word_letters}"}
+            {"role": "assistant", "content": f"{word}:{word_letters}"}
         ]
         conversation = {
             "messages": messages,
@@ -289,7 +289,16 @@ if __name__ == "__main__":
         print()
         print("-" * 100)
 
-    # also scrutinize the tokenization (last example only)
+    # # preview the SimpleSpelling task, first 10 examples
+    # task = SimpleSpelling()
+    # for i in range(10):
+    #     ex = task.get_example(i)
+    #     print("=" * 100)
+    #     print(ex['messages'][0]['content'])
+    #     print("-" * 100)
+    #     print(ex['messages'][1]['content'])
+
+    # # also scrutinize the tokenization (last example only)
     # from nanochat.tokenizer import get_tokenizer
     # tokenizer = get_tokenizer()
     # ids, mask = tokenizer.render_conversation(ex)
