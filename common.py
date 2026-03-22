@@ -133,7 +133,7 @@ def render_mc(question, letters, choices):
 
 if __name__ == "__main__":
     # very lightweight test of slicing
-    from tasks.mmlu import MMLU
+    from .mmlu import MMLU
 
     ds = MMLU(subset="auxiliary_train", split="train")
     print("Length of MMLU: ", len(ds))

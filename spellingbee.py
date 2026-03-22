@@ -28,8 +28,8 @@ python -m tasks.spellingbee
 
 import re
 import random
-from tasks.common import Task
-from nanochat.common import download_file_with_lock
+from .common import Task
+from nanochat.common import download_file_with_lock # TODO: handle this
 
 # Letters of the alphabet
 LETTERS = "abcdefghijklmnopqrstuvwxyz"

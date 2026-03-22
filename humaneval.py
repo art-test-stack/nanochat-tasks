@@ -6,8 +6,8 @@ It is a coding benchmark.
 
 import re
 from datasets import load_dataset
-from nanochat.execution import execute_code
-from tasks.common import Task
+from nanochat.execution import execute_code # TODO: make an execute_code function in gpt_lib / make a utility folder
+from .common import Task
 
 def extract_imports(prompt):
     """Extract import statements from the beginning of a code block."""

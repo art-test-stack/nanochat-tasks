@@ -16,7 +16,7 @@ Notice that GSM8K uses tool calls inside << >> tags.
 
 import re
 from datasets import load_dataset
-from tasks.common import Task
+from .common import Task
 
 
 GSM_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
